@@ -19,11 +19,17 @@ public:
     ~MotoUpdater();
 
 private:
-    QPushButton *btnSearch;
+    QPushButton *btnUpdater;
     QPushButton *btnAbout;
 
     QTextEdit *textLog;
 
     QGridLayout *mainLayout;
+
+private slots:
+    void Search();
+    void Download();
+    void Install();
+    void Recovery();
 };
 #endif // MOTOUPDATER_H
