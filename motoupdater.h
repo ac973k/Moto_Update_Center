@@ -10,6 +10,8 @@
 
 #include <QProcess>
 
+#include "downloader.h"
+
 class MotoUpdater : public QWidget
 {
     Q_OBJECT
@@ -26,10 +28,14 @@ private:
 
     QGridLayout *mainLayout;
 
+    Downloader m_downloader;
+
 private slots:
     void Search();
     void Download();
     void Install();
     void Recovery();
+
+    void onUpdateProgress(qint64 bytesReceived, qint64 bytesTotal);
 };
 #endif // MOTOUPDATER_H

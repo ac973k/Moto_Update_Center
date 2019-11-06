@@ -15,6 +15,8 @@ MotoUpdater::MotoUpdater(QWidget *parent)
     mainLayout->addWidget(btnAbout);
 
     setLayout(mainLayout);
+
+    QObject::connect(&m_downloader, &Downloader::updateDownloadProgress, this, &MotoUpdater::onUpdateProgress);
 }
 
 MotoUpdater::~MotoUpdater()
@@ -24,7 +26,9 @@ MotoUpdater::~MotoUpdater()
 
 void MotoUpdater::Search()
 {
-
+    QString site = "http://site.ru/update/version";
+    QUrl url = site;
+    m_downloader.get(url);
 }
 
 void MotoUpdater::Download()
@@ -40,4 +44,12 @@ void MotoUpdater::Install()
 void MotoUpdater::Recovery()
 {
 
+}
+
+void MotoUpdater::onUpdateProgress(qint64 bytesReceived, qint64 bytesTotal)
+{
+    while(bytesReceived < bytesTotal)
+    {
+        textLog->setText("Загружено " + bytesReceived);
+    }
 }
