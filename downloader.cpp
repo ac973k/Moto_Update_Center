@@ -21,7 +21,8 @@ bool Downloader::get(const QUrl& url)
 
     // Cоздаём объект класса файла для скачивания
     // здесь имеется целевая директория и имя файла, которое выделяется из URL
-    m_file = new QFile("/sdcard/" + url.fileName());
+    QString path = "/sdcard/" + url.fileName();
+    m_file = new QFile(path);
     // Пробуем открыть файл
     if (!m_file->open(QIODevice::WriteOnly))
     {

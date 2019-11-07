@@ -21,7 +21,10 @@ public:
     ~MotoUpdater();
 
 private:
-    QPushButton *btnUpdater;
+    QPushButton *btnSearch;
+    QPushButton *btnDownload;
+    QPushButton *btnInstall;
+    QPushButton *btnRecovery;
     QPushButton *btnAbout;
 
     QTextEdit *textLog;
