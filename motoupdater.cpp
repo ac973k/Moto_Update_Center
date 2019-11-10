@@ -68,7 +68,7 @@ void MotoUpdater::Search()
     }
     else
     {
-        //textLog->setPlainText("Что-то пошло не так...");
+        textLog->setPlainText("Что-то пошло не так...");
     }
 }
 
