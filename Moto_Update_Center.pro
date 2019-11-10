@@ -15,7 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-include($$PWD/lib/android-openssl.pri)
+include($$PWD/openssl.pri)
 
 SOURCES += \
     downloader.cpp \
@@ -45,6 +45,6 @@ contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
         $$PWD/android
 
     ANDROID_EXTRA_LIBS = \
-    $$PWD/lib/libcrypto.so \
-    $$PWD/lib/libssl.so
+    $$PWD/lib/libcrypto_1_1.so \
+    $$PWD/lib/libssl_1_1.so
 }
