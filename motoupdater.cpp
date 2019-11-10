@@ -1,5 +1,5 @@
 #include "motoupdater.h"
-#include <fstream>
+#include <QFile>
 
 MotoUpdater::MotoUpdater(QWidget *parent)
     : QWidget(parent)
@@ -34,10 +34,18 @@ MotoUpdater::~MotoUpdater()
 
 void MotoUpdater::Search()
 {
-    std::ifstream fCurrentVersion("/system/version");
-    int iCurrentVersion;
+    QFile fCurrentVersion("/system/version");
 
-    fCurrentVersion >> iCurrentVersion;
+    QString data;
+
+    fCurrentVersion.open(QIODevice::ReadOnly);
+
+    data = fCurrentVersion.readLine();
+
+    int iCurrentVersion = data.toInt();
+
+    QString test = "Переменная iCurrentVersion: " + QString::number(iCurrentVersion);
+    textLog->append(test);
 
     std::string site = "https://ac973k.github.io/update/";
     QString sSite = QString::fromStdString(site);
@@ -46,17 +54,24 @@ void MotoUpdater::Search()
     QUrl url;
     //url.setUrl(sSite);
     url.setUrl("https://ac973k.github.io/update/20181121");
-    url.setPort(false);
 
     m_downloader.get(url);
 
-    auto result = "/sdcard/" + std::to_string(iCurrentVersion);
+    QString result = "/sdcard/";
+    result.append(iCurrentVersion);
 
-    std::ifstream fNewVersion(result);
-    int iNewVersion;
+    QFile fNewVersion(result);
 
-    fNewVersion >> iNewVersion;
+    fNewVersion.open(QIODevice::ReadOnly);
 
+    data = fNewVersion.readLine();
+
+    int iNewVersion = data.toInt();
+
+    QString test1 = "Переменная iNewVersion: " + QString::number(iNewVersion);
+    textLog->append(test1);
+
+    /*
     if (iCurrentVersion < iNewVersion)
     {
         textLog->setPlainText("Доступна новая версия!");
@@ -70,6 +85,7 @@ void MotoUpdater::Search()
     {
         textLog->setPlainText("Что-то пошло не так...");
     }
+    */
 }
 
 void MotoUpdater::Download()

@@ -53,6 +53,7 @@ void Downloader::onReadyRead()
         // записываем их в файл
         m_file->write(m_currentReply->readAll());
     }
+    m_file->close();
 }
 
 void Downloader::onReply(QNetworkReply* reply)
