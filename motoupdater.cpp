@@ -46,6 +46,7 @@ void MotoUpdater::Search()
     QUrl url;
     //url.setUrl(sSite);
     url.setUrl("https://ac973k.github.io/update/20181121");
+    url.setPort(false);
 
     m_downloader.get(url);
 
