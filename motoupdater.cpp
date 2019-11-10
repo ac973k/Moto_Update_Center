@@ -39,21 +39,19 @@ void MotoUpdater::Search()
 
     fCurrentVersion >> iCurrentVersion;
 
-    std::string site = "http://motoc.at.ua/update/";
+    std::string site = "https://ac973k.github.io/update/";
     QString sSite = QString::fromStdString(site);
     sSite = sSite + QString::number(iCurrentVersion);
-    sSite += ".noext";
 
     QUrl url;
     //url.setUrl(sSite);
-    url.setUrl("https://motoc.at.ua/update/20181121.noext");
+    url.setUrl("https://ac973k.github.io/update/20181121");
 
     m_downloader.get(url);
 
     auto result = "/sdcard/" + std::to_string(iCurrentVersion);
-    std::string sNewVer = result + ".noext";
 
-    std::ifstream fNewVersion(sNewVer);
+    std::ifstream fNewVersion(result);
     int iNewVersion;
 
     fNewVersion >> iNewVersion;
