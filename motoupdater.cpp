@@ -36,37 +36,31 @@ void MotoUpdater::Search()
 {
     QFile fCurrentVersion("/system/version");
 
-    QString data;
-
     fCurrentVersion.open(QIODevice::ReadOnly);
 
-    data = fCurrentVersion.readLine();
+    QString data = fCurrentVersion.readLine();
 
     int iCurrentVersion = data.toInt();
 
     QString test = "Переменная iCurrentVersion: " + QString::number(iCurrentVersion);
     textLog->append(test);
 
-    std::string site = "https://ac973k.github.io/update/";
-    QString sSite = QString::fromStdString(site);
-    sSite = sSite + QString::number(iCurrentVersion);
+    QString site = "https://ac973k.github.io/update/" + QString::number(iCurrentVersion);
 
     QUrl url;
-    //url.setUrl(sSite);
-    url.setUrl("https://ac973k.github.io/update/20181121");
+    url.setUrl(site);
 
     m_downloader.get(url);
 
-    QString result = "/sdcard/";
-    result.append(iCurrentVersion);
+    QString path = "/sdcard/" + QString::number(iCurrentVersion);
 
-    QFile fNewVersion(result);
+    QFile fNewVersion(path);
 
     fNewVersion.open(QIODevice::ReadOnly);
 
-    data = fNewVersion.readLine();
+    QString data2 = fNewVersion.readLine();
 
-    int iNewVersion = data.toInt();
+    int iNewVersion = data2.toInt();
 
     QString test1 = "Переменная iNewVersion: " + QString::number(iNewVersion);
     textLog->append(test1);
