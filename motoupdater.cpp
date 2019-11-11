@@ -36,7 +36,10 @@ void MotoUpdater::Search()
 {
     QFile fCurrentVersion("/system/version");
 
-    fCurrentVersion.open(QIODevice::ReadOnly);
+    if(!fCurrentVersion.open(QIODevice::ReadOnly) | QIODevice::Text)
+    {
+        textLog->append(fCurrentVersion.errorString());
+    }
 
     QString data = fCurrentVersion.readLine();
 
@@ -55,15 +58,22 @@ void MotoUpdater::Search()
     QString path = "/sdcard/" + QString::number(iCurrentVersion);
 
     QFile fNewVersion(path);
-
-    fNewVersion.open(QIODevice::ReadOnly);
+    if(!fNewVersion.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        textLog->append("File not found");
+    }
 
     QString data2 = fNewVersion.readLine();
+
+    textLog->append(data2);
 
     int iNewVersion = data2.toInt();
 
     QString test1 = "Переменная iNewVersion: " + QString::number(iNewVersion);
     textLog->append(test1);
+
+    fCurrentVersion.close();
+    fNewVersion.close();
 
     /*
     if (iCurrentVersion < iNewVersion)
@@ -101,6 +111,6 @@ void MotoUpdater::onUpdateProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     while(bytesReceived < bytesTotal)
     {
-        textLog->setText("Загружено " + bytesReceived);
+        //textLog->append("Загружено " + bytesReceived);
     }
 }
