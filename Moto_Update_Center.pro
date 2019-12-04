@@ -15,8 +15,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-include($$PWD/openssl.pri)
-
 SOURCES += \
     main.cpp \
     motoupdater.cpp
@@ -37,15 +35,10 @@ DISTFILES += \
     android/gradlew \
     android/gradlew.bat \
     android/res/values/libs.xml \
-    android/res/values/strings.xml \
-    lib/libcrypto_1_1.so \
-    lib/libssl_1_1.so
+    android/res/values/strings.xml
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     ANDROID_PACKAGE_SOURCE_DIR = \
         $$PWD/android
 
-    ANDROID_EXTRA_LIBS = \
-    $$PWD/lib/libcrypto_1_1.so \
-    $$PWD/lib/libssl_1_1.so
 }

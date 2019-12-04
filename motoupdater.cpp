@@ -47,7 +47,7 @@ void MotoUpdater::Search()
 
     QProcess *procSearch = new QProcess;
     procSearch->setProcessChannelMode(QProcess::SeparateChannels);
-    procSearch->start("su", QStringList() << "-c" << "aria2c" << site);
+    procSearch->start("su", QStringList() << "-c" << "aria2c" << site << "--dir=/sdcard/");
 
     textLog->append(procSearch->readAll());
 
