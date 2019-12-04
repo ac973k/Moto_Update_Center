@@ -32,56 +32,27 @@ MotoUpdater::~MotoUpdater()
 }
 
 void MotoUpdater::Search()
-{   
+{   /*Get current version and print to TextEdit*/
     QFile fCurrentVersion("/system/version");
+    fCurrentVersion.open(QFile::ReadOnly);
 
-    QString data = fCurrentVersion.readLine();
+    QString tmpStr = fCurrentVersion.readLine();
+    int iCurrentVersion = tmpStr.toInt();
 
-    int iCurrentVersion = data.toInt();
+    QString sCurrentVersion = "Текущая версия: " + QString::number(iCurrentVersion);
 
-    QString test = "Переменная iCurrentVersion: " + QString::number(iCurrentVersion);
+    textLog->append(sCurrentVersion);
 
-    textLog->append(test);
-
-    QString site = "https://ac973k.github.io/update/" + QString::number(iCurrentVersion);
+    /*
+     * Get link to updated file and download this file
+    */
+    QString  site = "https://ac973k.github.io/update/" + QString::number(iCurrentVersion);
 
     QProcess *procSearch = new QProcess;
     procSearch->setProcessChannelMode(QProcess::SeparateChannels);
-    procSearch->start("su", QStringList() << "-c" << "aria2c" << site << "--dir=/sdcard/");
+    procSearch->start("aria2c" , QStringList() << "-d" << "/sdcard/" << site);
 
     textLog->append(procSearch->readAll());
-
-    QString path = "/sdcard/" + QString::number(iCurrentVersion);
-
-    QFile fNewVersion(path);
-
-    QString data2 = fNewVersion.readLine();
-
-    textLog->append(data2);
-
-    int iNewVersion = data2.toInt();
-
-    QString test1 = "Переменная iNewVersion: " + QString::number(iNewVersion);
-    textLog->append(test1);
-
-    fCurrentVersion.close();
-    fNewVersion.close();
-
-    /*
-    if (iCurrentVersion < iNewVersion)
-    {
-        textLog->setPlainText("Доступна новая версия!");
-        btnDownload->setDisabled(false);
-    }
-    else if (iCurrentVersion == iNewVersion)
-    {
-        textLog->setPlainText("Новых обновлений нет!");
-    }
-    else
-    {
-        textLog->setPlainText("Что-то пошло не так...");
-    }
-    */
 }
 
 void MotoUpdater::Download()
