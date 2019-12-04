@@ -37,6 +37,7 @@ DISTFILES += \
     android/gradlew \
     android/gradlew.bat \
     android/res/values/libs.xml \
+    android/res/values/strings.xml \
     lib/libcrypto_1_1.so \
     lib/libssl_1_1.so
 
