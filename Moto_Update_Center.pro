@@ -18,12 +18,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include($$PWD/openssl.pri)
 
 SOURCES += \
-    downloader.cpp \
     main.cpp \
     motoupdater.cpp
 
 HEADERS += \
-    downloader.h \
     motoupdater.h
 
 # Default rules for deployment.

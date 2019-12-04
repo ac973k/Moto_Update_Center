@@ -36,7 +36,7 @@ void MotoUpdater::Search()
 {
     QFile fCurrentVersion("/system/version");
 
-    if(!fCurrentVersion.open(QIODevice::ReadOnly) | QIODevice::Text)
+    if(!fCurrentVersion.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         textLog->append(fCurrentVersion.errorString());
     }
@@ -53,7 +53,7 @@ void MotoUpdater::Search()
     QUrl url;
     url.setUrl(site);
 
-    m_downloader.get(url);
+    m_downloader.getData(url);
 
     QString path = "/sdcard/" + QString::number(iCurrentVersion);
 
@@ -109,8 +109,5 @@ void MotoUpdater::Recovery()
 
 void MotoUpdater::onUpdateProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-    while(bytesReceived < bytesTotal)
-    {
-        //textLog->append("Загружено " + bytesReceived);
-    }
+
 }
