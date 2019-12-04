@@ -28,7 +28,18 @@ MotoUpdater::MotoUpdater(QWidget *parent)
 
 MotoUpdater::~MotoUpdater()
 {
+    /*Delete all button*/
+    delete btnSearch;
+    delete btnDownload;
+    delete btnRecovery;
+    delete btnInstall;
+    delete btnAbout;
 
+    /*Delete TextEdit*/
+    delete textLog;
+
+    /*Delete Layouts*/
+    delete mainLayout;
 }
 
 void MotoUpdater::Search()
