@@ -23,7 +23,6 @@ MotoUpdater::MotoUpdater(QWidget *parent)
 
     setLayout(mainLayout);
 
-    QObject::connect(&m_downloader, &Downloader::updateDownloadProgress, this, &MotoUpdater::onUpdateProgress);
     QObject::connect(btnSearch, SIGNAL(clicked()), this, SLOT(Search()));
 }
 
@@ -33,35 +32,28 @@ MotoUpdater::~MotoUpdater()
 }
 
 void MotoUpdater::Search()
-{
+{   
     QFile fCurrentVersion("/system/version");
-
-    if(!fCurrentVersion.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        textLog->append(fCurrentVersion.errorString());
-    }
 
     QString data = fCurrentVersion.readLine();
 
     int iCurrentVersion = data.toInt();
 
     QString test = "Переменная iCurrentVersion: " + QString::number(iCurrentVersion);
+
     textLog->append(test);
 
     QString site = "https://ac973k.github.io/update/" + QString::number(iCurrentVersion);
 
-    QUrl url;
-    url.setUrl(site);
+    QProcess *procSearch = new QProcess;
+    procSearch->setProcessChannelMode(QProcess::SeparateChannels);
+    procSearch->start("su", QStringList() << "-c" << "aria2c" << site);
 
-    m_downloader.getData(url);
+    textLog->append(procSearch->readAll());
 
     QString path = "/sdcard/" + QString::number(iCurrentVersion);
 
     QFile fNewVersion(path);
-    if(!fNewVersion.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        textLog->append("File not found");
-    }
 
     QString data2 = fNewVersion.readLine();
 
@@ -103,11 +95,6 @@ void MotoUpdater::Install()
 }
 
 void MotoUpdater::Recovery()
-{
-
-}
-
-void MotoUpdater::onUpdateProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
 
 }
