@@ -37,7 +37,18 @@ DISTFILES += \
     android/gradlew \
     android/gradlew.bat \
     android/res/values/libs.xml \
-    android/res/values/strings.xml
+    android/res/values/strings.xml \
+    android_openssl/LICENSE \
+    android_openssl/README.md \
+    android_openssl/arm/libcrypto_1_1.so \
+    android_openssl/arm/libssl_1_1.so \
+    android_openssl/arm64/libcrypto_1_1.so \
+    android_openssl/arm64/libssl_1_1.so \
+    android_openssl/build_ssl.sh \
+    android_openssl/x86/libcrypto_1_1.so \
+    android_openssl/x86/libssl_1_1.so \
+    android_openssl/x86_64/libcrypto_1_1.so \
+    android_openssl/x86_64/libssl_1_1.so
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     ANDROID_PACKAGE_SOURCE_DIR = \
