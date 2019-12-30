@@ -98,11 +98,11 @@ void MotoUpdater::Search()
     /*
      * Get link to updated file and download this file
     */
-    QString  site = "https://ac973k.github.io/update/" + QString::number(iCurrentVersion);
+    QString site = "https://ac973k.github.io/update/" + QString::number(iCurrentVersion);
 
     networkManagerSearch->get(QNetworkRequest(QUrl(site)));
 
-    QFile fNewVersion("/sdcard/update.zip");
+    QFile fNewVersion("/sdcard/version");
     fNewVersion.open(QFile::ReadOnly);
 
     tmpStr = fNewVersion.readLine();
@@ -130,7 +130,19 @@ void MotoUpdater::Search()
 
 void MotoUpdater::Download()
 {
+    QFile fNewVersion("/sdcard/version");
+    fNewVersion.open(QFile::ReadOnly);
 
+    QString tmpStr = fNewVersion.readLine();
+    int iNewVersion = tmpStr.toInt();
+
+    fNewVersion.close();
+
+    QString site = "https://ac973k.github.io/update/" + QString::number(iNewVersion) + ".zip";
+
+    networkManagerDownload->get(QNetworkRequest(QUrl(site)));
+
+    btnInstall->setDisabled(false);
 }
 
 void MotoUpdater::Install()
