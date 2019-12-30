@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QTextEdit>
 
+#include <QMessageBox>
+
 #include <QGridLayout>
 
 #include <QProcess>
@@ -27,6 +29,8 @@ private:
     QPushButton *btnRecovery;
     QPushButton *btnAbout;
 
+    QMessageBox *boxAbout;
+
     QTextEdit *textLog;
 
     QGridLayout *mainLayout;
@@ -42,6 +46,7 @@ private slots:
     void Download();
     void Install();
     void Recovery();
+    void About();
 
     void onSearchResult(QNetworkReply *reply);
     void onDownloadResult(QNetworkReply *reply);

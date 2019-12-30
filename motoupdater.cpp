@@ -10,6 +10,8 @@ MotoUpdater::MotoUpdater(QWidget *parent)
     procUnpacker = new QProcess;
     procInstaller = new QProcess;
 
+    boxAbout = new QMessageBox;
+
     mainLayout = new QGridLayout;
 
     textLog = new QTextEdit;
@@ -34,7 +36,12 @@ MotoUpdater::MotoUpdater(QWidget *parent)
 
     QObject::connect(networkManagerSearch, &QNetworkAccessManager::finished, this, &MotoUpdater::onSearchResult);
     QObject::connect(networkManagerDownload, &QNetworkAccessManager::finished, this, &MotoUpdater::onDownloadResult);
+
     QObject::connect(btnSearch, SIGNAL(clicked()), this, SLOT(Search()));
+    QObject::connect(btnDownload, SIGNAL(clicked()), this, SLOT(Download()));
+    QObject::connect(btnRecovery, SIGNAL(clicked()), this, SLOT(Recovery()));
+    QObject::connect(btnInstall, SIGNAL(clicked()), this, SLOT(Install()));
+    QObject::connect(btnAbout, SIGNAL(clicked()), this, SLOT(About()));
 }
 
 MotoUpdater::~MotoUpdater()
@@ -57,6 +64,8 @@ MotoUpdater::~MotoUpdater()
 
     delete procUnpacker;
     delete procInstaller;
+
+    delete boxAbout;
 }
 
 void MotoUpdater::onSearchResult(QNetworkReply *reply)
@@ -176,4 +185,19 @@ void MotoUpdater::Install()
 void MotoUpdater::Recovery()
 {
     system("su -c reboot recovery");
+}
+
+void MotoUpdater::About()
+{
+    boxAbout->setTextFormat(Qt::RichText);
+        boxAbout->setText("Motorola Update Manager"
+
+        "\n Разработано с помощью QT Framework."
+        ""
+        "\n Links:"
+        "\n https://qt.io"
+        "\nРазраб: Danilka Terentyev(4pda: AC97; GitHub: ac973k; vk: id498051587)"
+        ""
+        "\n Специально для Moto C 4G(Namath)");
+        boxAbout->exec();
 }
