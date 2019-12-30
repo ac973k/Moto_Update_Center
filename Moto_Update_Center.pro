@@ -22,6 +22,8 @@ SOURCES += \
     motoupdater.cpp
 
 HEADERS += \
+    QZip/qzipreader_p.h \
+    QZip/qzipwriter_p.h \
     motoupdater.h
 
 # Default rules for deployment.
