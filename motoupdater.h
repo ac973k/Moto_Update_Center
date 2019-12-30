@@ -9,6 +9,8 @@
 #include <QGridLayout>
 
 #include <QProcess>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 class MotoUpdater : public QWidget
 {
@@ -29,10 +31,14 @@ private:
 
     QGridLayout *mainLayout;
 
+    QNetworkAccessManager *networkManager;
+
 private slots:
     void Search();
     void Download();
     void Install();
     void Recovery();
+
+    void onResult(QNetworkReply *reply);
 };
 #endif // MOTOUPDATER_H

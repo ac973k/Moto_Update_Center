@@ -4,6 +4,8 @@
 MotoUpdater::MotoUpdater(QWidget *parent)
     : QWidget(parent)
 {
+    networkManager = new QNetworkAccessManager;
+
     mainLayout = new QGridLayout;
 
     textLog = new QTextEdit;
@@ -23,6 +25,7 @@ MotoUpdater::MotoUpdater(QWidget *parent)
 
     setLayout(mainLayout);
 
+    QObject::connect(networkManager, &QNetworkAccessManager::finished, this, &MotoUpdater::onResult);
     QObject::connect(btnSearch, SIGNAL(clicked()), this, SLOT(Search()));
 }
 
@@ -42,6 +45,22 @@ MotoUpdater::~MotoUpdater()
     delete mainLayout;
 }
 
+void MotoUpdater::onResult(QNetworkReply *reply)
+{
+    if(!reply->error())
+    {
+        QFile nFile("/sdcard/version");
+        nFile.open(QFile::WriteOnly);
+
+        QByteArray bts = reply->readAll();
+
+        nFile.write(bts);
+
+        nFile.close();
+    }
+    reply->deleteLater();
+}
+
 void MotoUpdater::Search()
 {   /*Get current version and print to TextEdit*/
     QFile fCurrentVersion("/system/version");
@@ -59,11 +78,9 @@ void MotoUpdater::Search()
     */
     QString  site = "https://ac973k.github.io/update/" + QString::number(iCurrentVersion);
 
-    QProcess *procSearch = new QProcess;
-    procSearch->setProcessChannelMode(QProcess::SeparateChannels);
-    procSearch->start("aria2c" , QStringList() << "-d" << "/sdcard/" << site);
+    networkManager->get(QNetworkRequest(QUrl(site)));
 
-    textLog->append(procSearch->readAll());
+
 }
 
 void MotoUpdater::Download()
