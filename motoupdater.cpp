@@ -26,6 +26,9 @@ MotoUpdater::MotoUpdater(QWidget *parent)
 
     setLayout(mainLayout);
 
+    btnDownload->setDisabled(true);
+    btnInstall->setDisabled(true);
+
     QObject::connect(networkManagerSearch, &QNetworkAccessManager::finished, this, &MotoUpdater::onSearchResult);
     QObject::connect(networkManagerDownload, &QNetworkAccessManager::finished, this, &MotoUpdater::onDownloadResult);
     QObject::connect(btnSearch, SIGNAL(clicked()), this, SLOT(Search()));
@@ -90,6 +93,7 @@ void MotoUpdater::Search()
     QString sCurrentVersion = "Текущая версия: " + QString::number(iCurrentVersion);
 
     textLog->append(sCurrentVersion);
+    fCurrentVersion.close();
 
     /*
      * Get link to updated file and download this file
@@ -98,7 +102,30 @@ void MotoUpdater::Search()
 
     networkManagerSearch->get(QNetworkRequest(QUrl(site)));
 
+    QFile fNewVersion("/sdcard/update.zip");
+    fNewVersion.open(QFile::ReadOnly);
 
+    tmpStr = fNewVersion.readLine();
+    int iNewVersion = tmpStr.toInt();
+
+    if(iCurrentVersion < iNewVersion)
+    {
+        QString sNewVersion = "Доступна новая версия: " + QString::number(iNewVersion);
+        textLog->append(sNewVersion);
+
+        btnDownload->setDisabled(false);
+        fNewVersion.close();
+    }
+    else if(iCurrentVersion == iNewVersion)
+    {
+        textLog->append("Новых обновлений нет!");
+        fNewVersion.close();
+    }
+    else
+    {
+        textLog->append("Что-то пошло не так...");
+        fNewVersion.close();
+    }
 }
 
 void MotoUpdater::Download()
