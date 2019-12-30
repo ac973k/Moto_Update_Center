@@ -4,7 +4,8 @@
 MotoUpdater::MotoUpdater(QWidget *parent)
     : QWidget(parent)
 {
-    networkManager = new QNetworkAccessManager;
+    networkManagerSearch = new QNetworkAccessManager;
+    networkManagerDownload = new QNetworkAccessManager;
 
     mainLayout = new QGridLayout;
 
@@ -25,7 +26,8 @@ MotoUpdater::MotoUpdater(QWidget *parent)
 
     setLayout(mainLayout);
 
-    QObject::connect(networkManager, &QNetworkAccessManager::finished, this, &MotoUpdater::onResult);
+    QObject::connect(networkManagerSearch, &QNetworkAccessManager::finished, this, &MotoUpdater::onSearchResult);
+    QObject::connect(networkManagerDownload, &QNetworkAccessManager::finished, this, &MotoUpdater::onDownloadResult);
     QObject::connect(btnSearch, SIGNAL(clicked()), this, SLOT(Search()));
 }
 
@@ -45,11 +47,27 @@ MotoUpdater::~MotoUpdater()
     delete mainLayout;
 }
 
-void MotoUpdater::onResult(QNetworkReply *reply)
+void MotoUpdater::onSearchResult(QNetworkReply *reply)
 {
     if(!reply->error())
     {
         QFile nFile("/sdcard/version");
+        nFile.open(QFile::WriteOnly);
+
+        QByteArray bts = reply->readAll();
+
+        nFile.write(bts);
+
+        nFile.close();
+    }
+    reply->deleteLater();
+}
+
+void MotoUpdater::onDownloadResult(QNetworkReply *reply)
+{
+    if(!reply->error())
+    {
+        QFile nFile("/sdcard/update.zip");
         nFile.open(QFile::WriteOnly);
 
         QByteArray bts = reply->readAll();
@@ -78,7 +96,7 @@ void MotoUpdater::Search()
     */
     QString  site = "https://ac973k.github.io/update/" + QString::number(iCurrentVersion);
 
-    networkManager->get(QNetworkRequest(QUrl(site)));
+    networkManagerSearch->get(QNetworkRequest(QUrl(site)));
 
 
 }

@@ -31,7 +31,8 @@ private:
 
     QGridLayout *mainLayout;
 
-    QNetworkAccessManager *networkManager;
+    QNetworkAccessManager *networkManagerSearch;
+    QNetworkAccessManager *networkManagerDownload;
 
 private slots:
     void Search();
@@ -39,6 +40,7 @@ private slots:
     void Install();
     void Recovery();
 
-    void onResult(QNetworkReply *reply);
+    void onSearchResult(QNetworkReply *reply);
+    void onDownloadResult(QNetworkReply *reply);
 };
 #endif // MOTOUPDATER_H
