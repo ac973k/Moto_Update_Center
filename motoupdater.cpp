@@ -147,11 +147,17 @@ void MotoUpdater::Download()
 
     fNewVersion.close();
 
-    QString site = "https://ac973k.github.io/update/" + QString::number(iNewVersion) + "update.zip";
+    textLog->append("Готовим ссылку...");
+
+    QString site = "https://ac973k.github.io/update/" + QString::number(iNewVersion) + "/update.zip";
 
     networkManagerDownload->get(QNetworkRequest(QUrl(site)));
 
+    textLog->append("Загружаем...");
+
     btnInstall->setDisabled(false);
+
+    textLog->append("Готово...");
 }
 
 void MotoUpdater::Install()
