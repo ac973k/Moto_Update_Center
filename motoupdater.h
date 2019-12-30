@@ -34,6 +34,9 @@ private:
     QNetworkAccessManager *networkManagerSearch;
     QNetworkAccessManager *networkManagerDownload;
 
+    QProcess *procUnpacker;
+    QProcess *procInstaller;
+
 private slots:
     void Search();
     void Download();

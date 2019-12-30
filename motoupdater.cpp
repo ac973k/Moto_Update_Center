@@ -7,6 +7,9 @@ MotoUpdater::MotoUpdater(QWidget *parent)
     networkManagerSearch = new QNetworkAccessManager;
     networkManagerDownload = new QNetworkAccessManager;
 
+    procUnpacker = new QProcess;
+    procInstaller = new QProcess;
+
     mainLayout = new QGridLayout;
 
     textLog = new QTextEdit;
@@ -48,6 +51,12 @@ MotoUpdater::~MotoUpdater()
 
     /*Delete Layouts*/
     delete mainLayout;
+
+    delete networkManagerSearch;
+    delete networkManagerDownload;
+
+    delete procUnpacker;
+    delete procInstaller;
 }
 
 void MotoUpdater::onSearchResult(QNetworkReply *reply)
@@ -98,7 +107,7 @@ void MotoUpdater::Search()
     /*
      * Get link to updated file and download this file
     */
-    QString site = "https://ac973k.github.io/update/" + QString::number(iCurrentVersion);
+    QString site = "https://ac973k.github.io/update/" + QString::number(iCurrentVersion) + "/version";
 
     networkManagerSearch->get(QNetworkRequest(QUrl(site)));
 
@@ -138,7 +147,7 @@ void MotoUpdater::Download()
 
     fNewVersion.close();
 
-    QString site = "https://ac973k.github.io/update/" + QString::number(iNewVersion) + ".zip";
+    QString site = "https://ac973k.github.io/update/" + QString::number(iNewVersion) + "update.zip";
 
     networkManagerDownload->get(QNetworkRequest(QUrl(site)));
 
@@ -147,10 +156,18 @@ void MotoUpdater::Download()
 
 void MotoUpdater::Install()
 {
+    procUnpacker->setProcessChannelMode(QProcess::SeparateChannels);
+    procUnpacker->start("su", QStringList() << "-c" << "busybox" << "unzip" << "/sdcard/update.zip" << "-d" << "/data/local/tmp/");
 
+    textLog->append(procUnpacker->readAll());
+
+    procInstaller->setProcessChannelMode(QProcess::SeparateChannels);
+    procInstaller->start("su", QStringList() << "-c" << "sh" << "/data/local/tmp/update/installer/install.sh");
+
+    textLog->append(procInstaller->readAll());
 }
 
 void MotoUpdater::Recovery()
 {
-
+    system("su -c reboot recovery");
 }
